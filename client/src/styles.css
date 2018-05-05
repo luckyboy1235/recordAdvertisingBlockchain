@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+  .video-js .vjs-title-bar {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: none;
+    font-size: 2em;
+    padding: .5em;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    bottom : 20%;
+    width: 100px;
+  }
+  .video-js .vjs-title-bar:hover {
+    box-shadow: 0 0 10px #9ecaed;
+  }
+  .video-js.vjs-paused.vjs-has-started .vjs-title-bar,
+  .video-js.vjs-user-active.vjs-has-started .vjs-title-bar{
+    display: block;
+  }
+  
