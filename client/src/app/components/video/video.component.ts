@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit, Input } from '@angular/core';
 import * as videojs from 'video.js';
 import '../../../../node_modules/videojs-contrib-ads/dist/videojs.ads.js'
 var adRunNext = 0
@@ -8,11 +8,13 @@ var adInited = 0;
   templateUrl: './video.component.html',
   styleUrls: ['./video.component.css']
 })
-export class VideoComponent implements OnInit {
+export class VideoComponent implements AfterViewInit {
 
   constructor() { }
+  
+  @Input('src') src : String
 
-  ngOnInit() {
+  ngAfterViewInit() {
     let player = videojs('example_video_1', {
       controls: true,
       autoplay: true,
@@ -32,7 +34,9 @@ export class VideoComponent implements OnInit {
 
       // resume content when all your linear ads have finished
       player.on('adended', function () {
+        console.log('adended');
         player.ads.endLinearAdMode();
+        player.removeChild('skipButton', { text: 'Skip' });
       });
     })
 
