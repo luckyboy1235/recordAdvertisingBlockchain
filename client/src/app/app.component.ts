@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
-  src = "/video/7092191947868798372.mp4";
+  src = "/films/1.mp4";
 }

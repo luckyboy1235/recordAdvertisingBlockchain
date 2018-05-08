@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { VideoComponent } from './components/video/video.component';
+import { AdvertisementService } from './services/advertisement.service';
 
 
 @NgModule({
@@ -12,9 +13,10 @@ import { VideoComponent } from './components/video/video.component';
     VideoComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [AdvertisementService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

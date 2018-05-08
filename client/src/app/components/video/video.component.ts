@@ -1,5 +1,7 @@
 import { Component, AfterViewInit, Input } from '@angular/core';
 import * as videojs from 'video.js';
+import { AdvertisementService } from '../../services/advertisement.service'
+import { Advertisement } from '../../models/Advertisement'
 import '../../../../node_modules/videojs-contrib-ads/dist/videojs.ads.js'
 var adRunNext = 0
 var adInited = 0;
@@ -10,9 +12,9 @@ var adInited = 0;
 })
 export class VideoComponent implements AfterViewInit {
 
-  constructor() { }
-  
-  @Input('src') src : String
+  constructor(private advertisementService: AdvertisementService) { }
+
+  @Input('src') src: String
 
   ngAfterViewInit() {
     let player = videojs('example_video_1', {
@@ -21,12 +23,20 @@ export class VideoComponent implements AfterViewInit {
       preload: true
     }, function () {
     })
+
+    var self = this;
     // Register the component with Video.js, so it can be used in players.
     videojs.registerComponent('skipButton', SkipButton);
-    player.on('readyforpreroll', function () {
+
+    player.on('readyforpreroll', () => {
       console.log('readyforpreroll');
       player.ads.startLinearAdMode();
-      player.src('/video/1137981449796386429.mp4');
+
+      //get random advetisement
+      self.advertisementService.getRandom().subscribe((data: Advertisement) => {
+        player.src(data.url);
+      })
+
       //trigger to remove spinner
       player.on('adplaying', function () {
         player.trigger('ads-ad-started');
@@ -39,8 +49,6 @@ export class VideoComponent implements AfterViewInit {
         player.removeChild('skipButton', { text: 'Skip' });
       });
     })
-
-
 
     //show advetising every 15 minius
     player.on('timeupdate', function () {
@@ -55,14 +63,14 @@ export class VideoComponent implements AfterViewInit {
 
       var currentTime = player.currentTime();
       console.log(currentTime);
-      if (shouldPlayAd(currentTime) && player.currentSrc() === "/video/7092191947868798372.mp4") {
+      if (shouldPlayAd(currentTime)) {
         adRunNext = currentTime + 119;
         console.log('play ads');
         if (!adInited) {
           this.ads();
           adInited = 1;
         }
-        
+
         player.trigger('adsready');
         player.addChild('skipButton', { text: 'Skip' });
       }
